@@ -1,0 +1,39 @@
+name: Release Taskman
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-release:
+    name: Build and release binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        go: [1.21]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Build
+        run: |
+          mkdir -p build
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            GOOS=windows GOARCH=amd64 go build -o build/taskman.exe
+          else
+            GOOS=linux GOARCH=amd64 go build -o build/taskman
+          fi
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
