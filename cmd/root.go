@@ -12,7 +12,7 @@ import (
 var (
 	rootCmd = &cobra.Command{
 		Use:   "taskman",
-		Short: "Простой CLI менеджер задач",
+		Short: "Simple CLI manager tasks",
 	}
 	store *utils.Storage
 )
@@ -33,6 +33,7 @@ func init() {
 	rootCmd.AddCommand(setCmd)
 	rootCmd.AddCommand(delCmd)
 	rootCmd.AddCommand(viewCmd)
+	rootCmd.AddCommand(conkyCmd)
 }
 
 func getBaseDir() string {

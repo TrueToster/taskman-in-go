@@ -32,5 +32,9 @@ _Note: The priority argument must contain a value between 0 and 5._
 `taskman` `delTask` `[id]`
 
 **show task list:**
-`taskman` `list`
-_Note: Hiding completed tasks will be implemented soon_
+`taskman` `list` `all`
+_Note:Can be used without 'all' to show pnly unfinished tasks._
+
+**show task list without color**
+`taskman` `conky` `all`
+_Note:Can be used without 'all' to show pnly unfinished tasks._

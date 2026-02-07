@@ -7,9 +7,8 @@ import (
 	"danbro/taskman/utils"
 )
 
-var listCmd = &cobra.Command{
-	Use:   "list [all]",
-	Short: "Показать список задач",
+var conkyCmd = &cobra.Command{
+	Use:   "conky [all]",
 	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		showAll := false
@@ -21,11 +20,11 @@ var listCmd = &cobra.Command{
 			showAll = true
 		}
 
-		return printTasks(showAll)
+		return printTasksC(showAll)
 	},
 }
 
-func printTasks(showAll bool) error {
+func printTasksC(showAll bool) error {
 	tasks, err := store.LoadAll()
 	if err != nil {
 		return err
@@ -51,8 +50,8 @@ func printTasks(showAll bool) error {
 
 	if len(filtered) == 0 {
 		fmt.Println("╔══════════════════════════════════════════╗")
-		fmt.Println("║ Add task with command:                   ║")
-		fmt.Println("║ taskman addTask                          ║")
+		fmt.Println("║           There are no tasks             ║")
+		fmt.Println("║                 relax                    ║")
 		fmt.Println("╚══════════════════════════════════════════╝")
 		fmt.Println(sep)
 		fmt.Println("║ Total tasks: 0                           ║")
@@ -70,11 +69,9 @@ func printTasks(showAll bool) error {
 
 		fmt.Printf("║ [%s] %-30s %5d ║\n", status, t.Title, t.Id)
 		fmt.Printf(
-			"║ To: %-25s %s%10s%s ║\n",
+			"║ To: %-25s %10s ║\n",
 			t.Date,
-			priorityColor(t.Priority),
 			priorityText(t.Priority),
-			colorReset,
 		)
 
 		if i < len(filtered)-1 {
@@ -88,44 +85,4 @@ func printTasks(showAll bool) error {
 	fmt.Println(bot)
 
 	return nil
-}
-
-const colorReset = "\033[0m"
-
-func priorityText(p int) string {
-	switch p {
-	case 0:
-		return "special"
-	case 1:
-		return "lowest"
-	case 2:
-		return "low"
-	case 3:
-		return "medium"
-	case 4:
-		return "high"
-	case 5:
-		return "highest"
-	default:
-		return "invalid"
-	}
-}
-
-func priorityColor(p int) string {
-	switch p {
-	case 0:
-		return "\033[35m"
-	case 1:
-		return "\033[37m"
-	case 2:
-		return "\033[32m"
-	case 3:
-		return "\033[34m"
-	case 4:
-		return "\033[33m"
-	case 5:
-		return "\033[31m"
-	default:
-		return ""
-	}
 }
