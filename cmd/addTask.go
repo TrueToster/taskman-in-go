@@ -11,7 +11,7 @@ var addCmd = &cobra.Command{
 	Use:   "addTask <name> <date> <priority> <details>",
 	Args:  cobra.MinimumNArgs(4),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		p, _ := strconv.Atoi(args[4])
+		p, _ := strconv.Atoi(args[2])
 
 		task := utils.Task{
 			Id:       store.NextID(),
